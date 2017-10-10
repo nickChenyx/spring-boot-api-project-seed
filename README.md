@@ -1,3 +1,14 @@
+# 这是一个完完全全的博客程序
+
+## 简介
+代码在脚手架基础上搭建，主要是SpringBoot 和 mybatis 及其插件。 使用的脚手架在下面有讲。
+
+## 主要工作
+- 添加redis支持
+- 开始博客搭建
+
+
+
 ![Licence](https://img.shields.io/badge/licence-none-green.svg)
 [![GitHub Release](https://img.shields.io/github/release/lihengming/spring-boot-api-project-seed.svg)](https://github.com/lihengming/spring-boot-api-project-seed/releases)
 ## 简介
