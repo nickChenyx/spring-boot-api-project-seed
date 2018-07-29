@@ -1,6 +1,6 @@
 package org.springframework.data.redis.connection.jedis;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -32,7 +32,7 @@ public class RedisClient {
      * @return
      */
     public void putObject(final String key, final Object value, final int cacheSeconds) {
-        if (StringUtils.isNotBlank(key)) {
+        if (StrUtil.isNotBlank(key)) {
             redisTemplete(key, new RedisExecute<Object>() {
                 @Override
                 public Object doInvoker(Jedis jedis) {
@@ -106,7 +106,7 @@ public class RedisClient {
             @Override
             public String doInvoker(Jedis jedis) {
                 String value = jedis.get(key);
-                return StringUtils.isNotBlank(value) && !"nil".equalsIgnoreCase(value) ? value : null;
+                return StrUtil.isNotBlank(value) && !"nil".equalsIgnoreCase(value) ? value : null;
             }
         });
     }

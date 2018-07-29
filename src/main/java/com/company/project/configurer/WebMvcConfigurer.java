@@ -1,15 +1,15 @@
 package com.company.project.configurer;
 
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.company.project.core.Result;
 import com.company.project.core.ResultCode;
 import com.company.project.core.ServiceException;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +46,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
+        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+//        FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(SerializerFeature.WriteMapNullValue,//保留空的字段
                 SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
@@ -165,7 +166,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
      */
     private boolean validateSign(HttpServletRequest request) {
         String requestSign = request.getParameter("sign");//获得请求签名，如sign=19e907700db7ad91318424a97c54ed57
-        if (StringUtils.isEmpty(requestSign)) {
+        if (StrUtil.isEmpty(requestSign)) {
             return false;
         }
         List<String> keys = new ArrayList<String>(request.getParameterMap().keySet());
@@ -177,12 +178,12 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
             sb.append(key).append("=").append(request.getParameter(key)).append("&");//拼接字符串
         }
         String linkString = sb.toString();
-        linkString = StringUtils.substring(linkString, 0, linkString.length() - 1);//去除最后一个'&'
+        linkString = StrUtil.sub(linkString, 0, linkString.length() - 1);//去除最后一个'&'
 
         String secret = "Potato";//密钥，自己修改
-        String sign = DigestUtils.md5Hex(linkString + secret);//混合密钥md5
+        String sign = SecureUtil.md5(linkString + secret);//混合密钥md5
 
-        return StringUtils.equals(sign, requestSign);//比较
+        return StrUtil.equals(sign, requestSign);//比较
     }
 
     private String getIpAddress(HttpServletRequest request) {

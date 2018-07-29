@@ -1,7 +1,7 @@
 package com.company.project.service;
 
+import cn.hutool.core.util.RandomUtil;
 import com.company.project.redis.RedisKeys;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,12 @@ public class TestRedisCacheService {
      */
     @Cacheable(value = RedisKeys._CACHE_TEST, key = "'" + RedisKeys._CACHE_TEST + "'")
     public String testCache() {
-        return RandomStringUtils.randomNumeric(4);
+        return RandomUtil.randomNumbers(4);
     }
 
     @Cacheable(value = RedisKeys._CACHE_TEST)
     public String testCache2(String s1, String s2) {
-        return RandomStringUtils.randomNumeric(4);
+        return RandomUtil.randomNumbers(4);
     }
 
 }
